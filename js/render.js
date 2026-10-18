@@ -4,7 +4,7 @@ const RD=(()=>{
 let cv,g,W=0,H=0,dpr=1,s=30,ox=0,oy=0,bg=null,bgKey='',wetC=null,wg=null,WR=22,dryT=0,safeT=0,safeB=0;
 const ZK=.55,SHK=.75;
 const X=x=>ox+x*s,Y=(y,z)=>oy+(y-(z||0)*ZK)*s;
-function init(c){cv=c;g=cv.getContext('2d');resize();}
+let duskEl=null;function init(c){cv=c;g=cv.getContext('2d',{alpha:false});duskEl=document.getElementById('duskov');resize();}
 function resize(){dpr=Math.min(2,window.devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+'px';cv.style.height=H+'px';
   const cs=getComputedStyle(document.documentElement);safeT=parseFloat(cs.getPropertyValue('--sat'))||0;safeB=parseFloat(cs.getPropertyValue('--sab'))||0;
   const avail=H-safeT-safeB;s=Math.min(W/10.4,(avail-62)/20.7);ox=(W-10*s)/2;oy=H-safeB-6-17.5*s;bgKey='';}
@@ -152,12 +152,10 @@ function frame(S,t,opt){if(!S)return;buildBg(S);g.setTransform(dpr,0,0,dpr,0,0);
   for(const d of S.lv.deco||[])if(d.k==='windsock')drawSock(d,S,t);
   for(const u of S.units)drawGauge(u,S,t);
   drawDial(S);
-  // dusk
+  // dusk: a composited overlay (cheaper than painting the whole screen) plus lit windows next door
   const dk=S.t/S.time;const warm=Math.max(0,1-dk*1.6),blue=U.ease((dk-.35)/.65);
-  if(warm>0){g.fillStyle='rgba(255,150,60,'+(.1*warm)+')';g.fillRect(0,0,W,H);}
-  if(blue>0){g.fillStyle='rgba(22,30,72,'+(.5*blue)+')';g.fillRect(0,0,W,H);
-    // lit windows next door
-    g.globalAlpha=blue*.85;for(const wx of [1.2,3.4,8.8,11]){if(S.win&&Math.abs(wx-S.win.x)<1.4)continue;if(((wx*7)|0)%3===0)continue;const [x0,y0,x1,y1]=winRect(wx);g.fillStyle='#f2c46a';g.fillRect(x0,y0,x1-x0,y1-y0);}g.globalAlpha=1;}
+  if(duskEl){const a=Math.max(.1*warm,.5*blue);const k=a>0?(.1*warm)/(a||1):0;duskEl.style.background=blue>0?'rgba(22,30,72,'+(.5*blue).toFixed(3)+')':'rgba(255,150,60,'+(.1*warm).toFixed(3)+')';}
+  if(blue>0){g.globalAlpha=blue*.85;for(const wx of [1.2,3.4,8.8,11]){if(S.win&&Math.abs(wx-S.win.x)<1.4)continue;if(((wx*7)|0)%3===0)continue;const [x0,y0,x1,y1]=winRect(wx);g.fillStyle='#f2c46a';g.fillRect(x0,y0,x1-x0,y1-y0);}g.globalAlpha=1;}
   if(opt.flash>0){g.fillStyle='rgba(255,255,255,'+opt.flash*.25+')';g.fillRect(0,0,W,H);}
 }
 function drainWet(S){const q=SIM.WQ,n=q.n;if(!wg)return;

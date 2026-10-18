@@ -91,7 +91,7 @@ function floatAt(o,txt,col){if(!o)return;GAME.float.push({x:o.x,y:o.y,z:o.h||o.z
 let toastT=0;function toastCoach(t){if(GAME.coach&&COACH[GAME.coach.k]&&GAME.coach.step<COACH[GAME.coach.k].length)return;setCoach(t);toastT=3.2;}
 
 // ---------- results
-function finish(){const S=SIM.S,st=SIM.stars(),lv=GAME.lv;GAME.state='result';AU.silence();
+function finish(){const S=SIM.S,st=SIM.stars(),lv=GAME.lv;GAME.state='result';AU.silence();setCoach('');toastT=0;
   const won=st.won;const r={won,stars:st.n,why:S.why,water:S.water,used:S.used,t:S.t,tidy:st.tidy,par:st.par,mode:GAME.mode};GAME.lastResult=r;
   SV.D.stats.litres+=S.used;
   const kick=GAME.mode==='heat'?'Heatwave \u00b7 garden '+GAME.heat.n:GAME.mode==='daily'?"Today's garden":lv.name+' \u00b7 '+lv.who;$('rKick').textContent=kick;

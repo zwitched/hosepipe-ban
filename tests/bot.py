@@ -68,6 +68,13 @@ class Bot:
         await s.pg.wait_for_timeout(int(s.react*1000))
       await s.steer(az,el)
       # hold until it's done, re-checking the window and the fill
+      if s.noise:  # a person sees where it lands and corrects, with a smaller error each time
+        for corr in range(3):
+          await s.pg.wait_for_timeout(int(max(.2,s.react)*1000))
+          a=await s.E(f"BOT.aim({u['id']},'{m}')")
+          if not a:break
+          f=0.5**(corr+1);await s.steer(a[0]+s.r.gauss(0,s.noise*0.05*f),a[1]+s.r.gauss(0,s.noise*3*f))
+          if await s.E(f"SIM.S.units[{u['id']}].done"):break
       for k in range(80):
         y=await s.E(f"(()=>{{const u=SIM.S.units[{u['id']}];return [u.done||u.w+SIM.live/120/u.cap*{s.lead}>=1.05,u.w,SIM.S.state,SIM.S.win?SIM.S.win.st:'',SIM.S.cat&&SIM.S.cat.st==='dig']}})()")
         if y[0] or y[2]!='play' or y[3] in('watch','twitch') or y[4]:break

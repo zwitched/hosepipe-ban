@@ -34,18 +34,18 @@ const L=[
 {id:'no19',no:19,name:'No. 19',who:'The Hallorans',line:'The apple tree catches anything you lob. Shoot under it.',time:80,parF:1.7,
  trees:[{x:5,y:6.4,r:2.2,z0:2.75}],beds:[{x0:2.6,y0:5.8,x1:7.4,y1:7,plant:'lettuce',n:3},{x0:1.5,y0:1.6,x1:8.5,y1:2.6,plant:'beans',n:4}],baskets:[{x:1,y:12.5,z:2.2},{x:9,y:12.5,z:2.2}],
  hard:[PATIO],deco:[{k:'swing',x:8.2,y:9.6}]},
-{id:'no21',no:21,name:'No. 21',who:'The Fishers',line:'Washing, wind and the window. Good luck.',time:85,parF:1.6,wind:{x:-2.2,y:0,ph:2},window:{x:7,first:9,warn:1.3,watch:3,quiet:6.5,quietVar:4,rate:.42},
+{id:'no21',no:21,name:'No. 21',who:'The Fishers',line:'Washing, wind and the window. Good luck.',time:100,parF:1.6,wind:{x:-2.2,y:0,ph:2},window:{x:7,first:9,warn:1.3,watch:3,quiet:6.5,quietVar:4,rate:.42},
  wash:{ax:.4,ay:9.6,bx:9.6,by:9.6,items:[[.05,.15,.8,'shirt','#e9e4d6'],[.2,.3,.8,'towel','#5f8a6a'],[.36,.46,.9,'sheet','#e8e0ef'],[.55,.65,.7,'shirt','#c55a4a'],[.7,.8,.85,'towel','#e2b64a'],[.84,.93,.6,'socks','#3e4a5c']]},
  beds:[{x0:1,y0:2.2,x1:9,y1:3.3,plant:'roses',n:4}],pots:[{x:2,y:6.4,plant:'marigold'},{x:8,y:6.4,plant:'marigold'},{x:5,y:12.6,plant:'fern'}],baskets:[{x:1.2,y:13.4,z:2.2}],
  hard:[PATIO],deco:[{k:'post',x:.4,y:9.6},{k:'post',x:9.6,y:9.6},{k:'windsock',x:.4,y:.4}]},
-{id:'no23',no:23,name:'No. 23',who:'Show week',line:'The village show is Saturday. Everything at once.',time:95,parF:1.55,cat:{delay:12,gap:9,dig:.2},window:{x:3,first:10,warn:1.3,watch:3,quiet:7,quietVar:4,rate:.42},
+{id:'no23',no:23,name:'No. 23',who:'Show week',line:'The village show is Saturday. Everything at once.',time:120,parF:1.55,cat:{delay:12,gap:9,dig:.2},window:{x:3,first:10,warn:1.3,watch:3,quiet:7,quietVar:4,rate:.42},
  gh:{x0:5.2,y0:1.6,x1:9.4,y1:5.4,d0:6.4,d1:8.2},pots:[{x:6.6,y:3,plant:'tomato',h:.7,cap:2.2},{x:7.6,y:2.4,plant:'tomato',h:.7,cap:2.2},{x:8.1,y:3.8,plant:'tomato',h:.7,cap:2.2},{x:1.6,y:4.2,plant:'marrow',r:.6,cap:3.6}],
  beds:[{x0:1,y0:8,x1:4,y1:9.2,plant:'lettuce',n:2},{x0:6,y0:8,x1:9,y1:9.2,plant:'beans',n:2},{x0:2.8,y0:12.5,x1:7.2,y1:13.3,plant:'seedlings',fragile:true,n:3,cap:1.1}],baskets:[{x:5,y:10.6,z:2.3}],
  hard:[PATIO],deco:[{k:'pergola',x:3.6,y:10.6,x2:6.4}]},
 ];
 function need(lv){let n=0;for(const p of lv.pots||[])n+=p.cap||2.2;for(const p of lv.baskets||[])n+=p.cap||1.8;
   for(const b of lv.beds||[]){const c=b.n||Math.max(1,Math.round(Math.max(b.x1-b.x0,b.y1-b.y0)/1.4));n+=c*(b.cap||1.5);}return n;}
-function finish(lv){const n=need(lv);lv.need=n;if(!lv.water)lv.water=Math.ceil(n*(lv.waterF||2.6));lv.par=Math.max(1,Math.round((lv.water-n*lv.parF)*10)/10);lv.seed=lv.seed||U.hash(lv.id);return lv;}
+function finish(lv){const n=need(lv);lv.need=n;if(!lv.water)lv.water=Math.ceil(n*(lv.waterF||(lv.gen?2.8:lv.no<=5?3.4:lv.no<=13?3.0:2.8)));lv.par=Math.max(1,Math.round((lv.water-n*lv.parF)*10)/10);lv.seed=lv.seed||U.hash(lv.id);return lv;}
 L.forEach(finish);
 
 // --- reachability check: every plant must be hittable by some clean shot (jet, or spray for seedlings)
