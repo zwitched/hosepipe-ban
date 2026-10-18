@@ -15,6 +15,7 @@ async def run(p,t,dev,shots):
   W,H=await E("[innerWidth,innerHeight]")
   await tc.press((W/2,H*.6));await pg.wait_for_timeout(250);x=await st(pg)
   t.chk(f'[{tag}] holding a finger turns the water on at once',x['flow'] and x['started'] and await E("SIM.live")>5,x)
+  t.chk(f'[{tag}] the first touch starts the audio engine',await E("!!AU.ctx&&AU.ctx.state==='running'"))
   t.chk(f'[{tag}] intro card hides on first touch',not await E("document.getElementById('intro').style.opacity==='1'"))
   el0=x['el'];await tc.moveto((W/2,H*.6-60),steps=6);x=await st(pg)
   t.chk(f'[{tag}] sliding up raises the hose',x['el']>el0+8,el0,x['el'])

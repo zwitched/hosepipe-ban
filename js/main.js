@@ -7,7 +7,7 @@ const SV={K:'hosepipeban.v1',D:null,
   save(){try{localStorage.setItem(this.K,JSON.stringify(this.D));}catch(e){}}};
 SV.load();
 
-const GAME={state:'title',mode:'street',lv:null,idx:0,started:false,endT:0,heat:null,coach:null,float:[],flash:0,lastResult:null,touchId:null,tx:0,ty:0,daily:null,setBack:'sTitle'};
+const GAME={lastHits:0,hitT:0,state:'title',mode:'street',lv:null,idx:0,started:false,endT:0,heat:null,coach:null,float:[],flash:0,lastResult:null,touchId:null,tx:0,ty:0,daily:null,setBack:'sTitle'};
 const LV=LEVELS.list;
 function unlocked(i){return i===0||(SV.D.stars[LV[i-1].id]||0)>0;}
 function heatOpen(){return (SV.D.stars.no5||0)>0;}
@@ -32,7 +32,7 @@ function street(){let tot=0;const h=$('houses');h.innerHTML='';
 function tap(){AU.init();AU.play('tick');}
 
 // ---------- starting gardens
-function begin(lv,skipIntro){const S=SIM.newLevel(lv);RD.invalidate();GAME.lv=lv;GAME.state='play';GAME.started=false;GAME.endT=0;GAME.float=[];GAME.touchId=null;
+function begin(lv,skipIntro){const S=SIM.newLevel(lv);GAME.lastHits=0;RD.invalidate();GAME.lv=lv;GAME.state='play';GAME.started=false;GAME.endT=0;GAME.float=[];GAME.touchId=null;
   hideAll();$('hud').classList.remove('hidden');
   $('hudName').textContent=(lv.name?lv.name+' \u00b7 ':'')+lv.who+(GAME.mode==='heat'?'  ('+GAME.heat.n+')':'');
   const spray=lv.beds&&lv.beds.some(b=>b.fragile)||(SV.D.stars.no9||0)>0||GAME.mode!=='street';$('bNozzle').classList.toggle('hidden',!spray);nozzleUI();
@@ -130,6 +130,8 @@ cv.addEventListener('pointerdown',down,{passive:false});cv.addEventListener('poi
 cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);cv.addEventListener('lostpointercapture',up);
 document.addEventListener('touchmove',e=>{if(!e.target.closest||!e.target.closest('#houses,.sl'))e.preventDefault();},{passive:false});
 document.addEventListener('contextmenu',e=>e.preventDefault());
+// iOS only unlocks Web Audio inside certain gestures; try on all of them (init() is idempotent)
+for(const n of ['touchend','pointerup','click'])document.addEventListener(n,()=>AU.init(),{passive:true});
 function pause(){if(GAME.state!=='play')return;GAME.state='paused';GAME.touchId=null;SIM.setFlow(false);AU.silence();show('sPause');}
 function resume(){if(GAME.state!=='paused')return;hideAll();GAME.state='play';}
 document.addEventListener('visibilitychange',()=>{if(document.hidden){pause();AU.suspend();}else AU.resume();});
@@ -172,6 +174,8 @@ function loop(now){requestAnimationFrame(loop);let dt=(now-last)/1000;last=now;i
     if(GAME.started)SIM.step(dt);else{S.flowing=false;}
     drain();coachTick(dt);if(toastT>0){toastT-=dt;if(toastT<=0)setCoach('');}
     if(S.state!=='play'){GAME.endT+=dt;if(GAME.endT>(S.state==='won'?1.0:1.2))finish();}
+    // a faint tick in the hand while the water is landing on a plant (Android vibrates; iOS ignores it)
+    if(S.hits>GAME.lastHits){GAME.hitT-=dt;if(GAME.hitT<=0){GAME.hitT=.14;vib(5);}}GAME.lastHits=S.hits;
     hud();AU.update(S,dt,S.t/S.time);}
   else if(GAME.state==='result'){SIM.step(dt);AU.update(null,dt,0);}
   else if(GAME.state==='title'&&S){const k=now/1000;S.flowing=true;S.aimAz=Math.sin(k*.45)*.55;S.aimEl=20+Math.sin(k*.8)*12;S.t=0;SIM.step(dt);AU.update(null,dt,0);}
