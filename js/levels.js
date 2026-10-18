@@ -58,7 +58,7 @@ const PLANTS=['geranium','lavender','marigold','herbs','fern','hosta'];
 const SURN=['Ashworth','Begum','Carver','Doyle','Ellison','Fenwick','Gorski','Hale','Iqbal','Jarvis','Keane','Lowe','Moss','Nair','Oduya','Pearce','Quinn','Rafferty','Sowerby','Tran','Underwood','Vance','Whitlock','Yates'];
 function gen(seed,d){const r=U.rng(seed);const R=(a,b)=>a+r()*(b-a);const pick=a=>a[(r()*a.length)|0];
   for(let tries=0;tries<40;tries++){
-  const lv={id:'gen'+seed+'_'+tries,no:0,name:'',who:'The '+pick(SURN)+'s',line:'',time:Math.round(70+d*2),parF:Math.max(1.45,1.8-d*.03),pots:[],beds:[],baskets:[],hard:[PATIO],deco:[],gen:true,seed:seed*31+tries};
+  const lv={id:'gen'+seed+'_'+tries,no:0,name:'',who:(n=>'The '+n+(n.endsWith('s')?'es':'s'))(pick(SURN)),line:'',time:Math.round(70+d*2),parF:Math.max(1.45,1.8-d*.03),pots:[],beds:[],baskets:[],hard:[PATIO],deco:[],gen:true,seed:seed*31+tries};
   const occ=[[0,14.6,10,17.8]];const free=(x0,y0,x1,y1)=>x0>=.3&&x1<=9.7&&y0>=.6&&!occ.some(o=>x0<o[2]+.3&&x1>o[0]-.3&&y0<o[3]+.3&&y1>o[1]-.3);
   const place=(w,h,y0=.8,y1=14.2)=>{for(let k=0;k<60;k++){const x=R(.4,9.6-w),y=R(y0,y1-h);if(free(x,y,x+w,y+h)){occ.push([x,y,x+w,y+h]);return [x,y];}}return null;};
   // features unlocked by depth, pick a few
@@ -71,7 +71,7 @@ function gen(seed,d){const r=U.rng(seed);const R=(a,b)=>a+r()*(b-a);const pick=a
      while(u<.9){const w=R(.07,.11);items.push([u,u+w,R(.6,.9),pick(['shirt','towel','sheet','socks']),pick(cols)]);u+=w+R(.02,.08);}
      lv.wash={ax:.4,ay:y,bx:9.6,by:y2,items};lv.deco.push({k:'post',x:.4,y},{k:'post',x:9.6,y:y2});occ.push([0,Math.min(y,y2)-.4,10,Math.max(y,y2)+.4]);}
   if(use.has('seedlings')){const p=place(2.6,.9,11.6,14.2);if(p)lv.beds.push({x0:p[0],y0:p[1],x1:p[0]+2.6,y1:p[1]+.9,plant:'seedlings',fragile:true,n:2,cap:1.1});}
-  if(use.has('baskets')){const y=R(8,12.5),n=2+(r()<.4?1:0);const xs=n===2?[2.4,7.6]:[2.2,5,7.8];lv.deco.push({k:'pergola',x:xs[0]-1.1,y,x2:xs[n-1]+1.1});for(const x of xs)lv.baskets.push({x,y,z:2.25});}
+  if(use.has('baskets')){let y=0;for(let k=0;k<30;k++){const yy=R(8,12.5);if(free(1.1,yy-.7,8.9,yy+.7)){y=yy;break;}}const n=2+(r()<.4?1:0);const xs=n===2?[2.4,7.6]:[2.2,5,7.8];if(y)occ.push([xs[0]-1.1,y-.7,xs[n-1]+1.1,y+.7]);if(y)lv.deco.push({k:'pergola',x:xs[0]-1.1,y,x2:xs[n-1]+1.1});if(y)for(const x of xs)lv.baskets.push({x,y,z:2.25});}
   if(use.has('wind')){lv.wind={x:(r()<.5?-1:1)*R(1.6,2.4+d*.06),y:R(-.6,.6),ph:R(0,6)};lv.deco.push({k:'windsock',x:r()<.5?.4:9.6,y:.4});}
   if(use.has('window'))lv.window={x:R(2,8),first:R(6,10),warn:Math.max(.9,1.4-d*.03),watch:3,quiet:Math.max(4.5,7-d*.15),quietVar:4,rate:.42};
   if(use.has('cat'))lv.cat={delay:R(6,12),gap:Math.max(5,9-d*.2),dig:.22};
