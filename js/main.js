@@ -22,8 +22,8 @@ const TITLE_LV=Object.assign({},LV[0],{id:'title',pots:[],water:1e6,time:1e6});
 function toTitle(){GAME.state='title';$('hud').classList.add('hidden');$('intro').classList.add('hidden');AU.silence();
   SIM.newLevel(TITLE_LV);refreshTitle();show('sTitle');}
 function refreshTitle(){const nx=LV.findIndex(l=>!(SV.D.stars[l.id]>0));$('bPlay').textContent=nx<0?'Back to the Close':nx===0?'Start watering':'Carry on: '+LV[nx].name;
-  $('bHeat').disabled=!heatOpen();$('bHeat').textContent=heatOpen()?'Heatwave':'Heatwave (after No. 5)';
-  $('bDaily').disabled=!dailyOpen();$('bDaily').textContent=dailyOpen()?"Today's garden":"Today's garden (after No. 1)";}
+  $('bHeat').disabled=!heatOpen();$('bHeat').innerHTML=heatOpen()?'Heatwave':'Heatwave<small>after No. 5</small>';
+  $('bDaily').disabled=!dailyOpen();$('bDaily').innerHTML=dailyOpen()?"Today's garden":"Today's garden<small>after No. 1</small>";}
 function street(){let tot=0;const h=$('houses');h.innerHTML='';
   LV.forEach((l,i)=>{const st=SV.D.stars[l.id]||0;tot+=st;const b=document.createElement('button');b.className='house'+(unlocked(i)?'':' locked');b.id='h-'+l.id;
     b.innerHTML='<span class="num">'+l.no+'</span><span class="nm">'+l.who+'<small>'+(unlocked(i)?l.line:'Water No. '+LV[i-1].no+' first')+'</small></span><span class="st">'+'&#9733;'.repeat(st)+'<i>'+'&#9733;'.repeat(3-st)+'</i></span>';
@@ -178,7 +178,7 @@ function loop(now){requestAnimationFrame(loop);let dt=(now-last)/1000;last=now;i
     if(S.hits>GAME.lastHits){GAME.hitT-=dt;if(GAME.hitT<=0){GAME.hitT=.14;vib(5);}}GAME.lastHits=S.hits;
     hud();AU.update(S,dt,S.t/S.time);}
   else if(GAME.state==='result'){SIM.step(dt);AU.update(null,dt,0);}
-  else if(GAME.state==='title'&&S){const k=now/1000;S.flowing=true;S.aimAz=Math.sin(k*.45)*.55;S.aimEl=20+Math.sin(k*.8)*12;S.t=0;SIM.step(dt);AU.update(null,dt,0);}
+  else if(GAME.state==='title'&&S){const k=now/1000;S.flowing=true;S.aimAz=Math.sin(k*.45)*.32;S.aimEl=10+Math.sin(k*.8)*6;S.t=0;SIM.step(dt);AU.update(null,dt,0);}
   GAME.flash=Math.max(0,GAME.flash-dt*2);
   if(S){RD.frame(S,now/1000,{reticle:GAME.state==='play'&&GAME.started&&S.state==='play'?aimMarker(S):null,flash:GAME.flash});drawFloat(dt);}}
 function drawFloat(dt){if(!GAME.float.length)return;const g=cv.getContext('2d');g.textAlign='center';g.font='bold '+Math.round(RD.s*.42)+'px Georgia,serif';
