@@ -1,0 +1,27 @@
+{"profile": {}, "lvl": "no1", "won": true, "why": "", "stars": 3, "water": 14.5, "t": 8.5, "done": "3/3", "sog": 0, "flat": 0, "soaked": 0}
+{"profile": {}, "lvl": "no3", "won": true, "why": "", "stars": 2, "water": 28.5, "t": 22.6, "done": "8/8", "sog": 4, "flat": 0, "soaked": 0}
+{"profile": {}, "lvl": "no5", "won": true, "why": "", "stars": 3, "water": 17.4, "t": 16.8, "done": "5/5", "sog": 0, "flat": 0, "soaked": 0}
+{"profile": {}, "lvl": "no7", "won": true, "why": "", "stars": 2, "water": 15.6, "t": 16.5, "done": "6/6", "sog": 4, "flat": 0, "soaked": 0}
+{"profile": {}, "lvl": "no9", "won": true, "why": "", "stars": 3, "water": 14.5, "t": 18.8, "done": "7/7", "sog": 0, "flat": 0, "soaked": 0}
+{"profile": {}, "lvl": "no11", "won": true, "why": "", "stars": 2, "water": 30.0, "t": 29.1, "done": "12/12", "sog": 2, "flat": 0, "soaked": 0}
+{"profile": {}, "lvl": "no13", "won": true, "why": "", "stars": 2, "water": 20.4, "t": 29.5, "done": "7/7", "sog": 2, "flat": 0, "soaked": 0}
+{"profile": {}, "lvl": "no15", "won": true, "why": "", "stars": 2, "water": 14.3, "t": 19.7, "done": "8/8", "sog": 1, "flat": 0, "soaked": 0}
+{"profile": {}, "lvl": "no17", "won": true, "why": "", "stars": 2, "water": 15.8, "t": 22.3, "done": "7/7", "sog": 1, "flat": 0, "soaked": 0}
+{"profile": {}, "lvl": "no19", "won": true, "why": "", "stars": 1, "water": 11.6, "t": 28.6, "done": "9/9", "sog": 4, "flat": 0, "soaked": 0}
+{"profile": {}, "lvl": "no21", "won": true, "why": "", "stars": 1, "water": 14.9, "t": 41.5, "done": "8/8", "sog": 4, "flat": 0, "soaked": 2}
+{"profile": {}, "lvl": "no23", "won": true, "why": "", "stars": 2, "water": 14.2, "t": 66.1, "done": "12/12", "sog": 0, "flat": 0, "soaked": 0}
+PASS skilled bot beats no1 {"won": true, "why": "", "stars": 3, "water": 14.5, "t": 8.5, "done": "3/3", "sog": 0, "flat": 0, "soaked": 0}
+PASS skilled bot beats no3 {"won": true, "why": "", "stars": 2, "water": 28.5, "t": 22.6, "done": "8/8", "sog": 4, "flat": 0, "soaked": 0}
+PASS skilled bot beats no5 {"won": true, "why": "", "stars": 3, "water": 17.4, "t": 16.8, "done": "5/5", "sog": 0, "flat": 0, "soaked": 0}
+PASS skilled bot beats no7 {"won": true, "why": "", "stars": 2, "water": 15.6, "t": 16.5, "done": "6/6", "sog": 4, "flat": 0, "soaked": 0}
+PASS skilled bot beats no9 {"won": true, "why": "", "stars": 3, "water": 14.5, "t": 18.8, "done": "7/7", "sog": 0, "flat": 0, "soaked": 0}
+PASS skilled bot beats no11 {"won": true, "why": "", "stars": 2, "water": 30.0, "t": 29.1, "done": "12/12", "sog": 2, "flat": 0, "soaked": 0}
+PASS skilled bot beats no13 {"won": true, "why": "", "stars": 2, "water": 20.4, "t": 29.5, "done": "7/7", "sog": 2, "flat": 0, "soaked": 0}
+PASS skilled bot beats no15 {"won": true, "why": "", "stars": 2, "water": 14.3, "t": 19.7, "done": "8/8", "sog": 1, "flat": 0, "soaked": 0}
+PASS skilled bot beats no17 {"won": true, "why": "", "stars": 2, "water": 15.8, "t": 22.3, "done": "7/7", "sog": 1, "flat": 0, "soaked": 0}
+PASS skilled bot beats no19 {"won": true, "why": "", "stars": 1, "water": 11.6, "t": 28.6, "done": "9/9", "sog": 4, "flat": 0, "soaked": 0}
+PASS skilled bot beats no21 {"won": true, "why": "", "stars": 1, "water": 14.9, "t": 41.5, "done": "8/8", "sog": 4, "flat": 0, "soaked": 2}
+PASS skilled bot beats no23 {"won": true, "why": "", "stars": 2, "water": 14.2, "t": 66.1, "done": "12/12", "sog": 0, "flat": 0, "soaked": 0}
+PASS no JS errors during the skilled run []
+ERRORS none
+SUMMARY bot: 13/13 passed
