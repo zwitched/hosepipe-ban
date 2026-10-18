@@ -16,6 +16,7 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 html,body{margin:0;height:100%;overflow:hidden;background:#2f3b26;overscroll-behavior:none;touch-action:none;font-family:Georgia,'Iowan Old Style','Palatino Linotype',serif;color:var(--ink)}
 canvas{position:fixed;inset:0;display:block;touch-action:none}
+#duskov{position:fixed;inset:0;pointer-events:none}
 button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
 .hidden{display:none!important}
 #hud{position:fixed;inset:0;pointer-events:none}
@@ -61,11 +62,12 @@ body.left #butt{left:auto;right:calc(var(--sar) + 10px)}body.left #bNozzle{right
 @keyframes blink{50%{opacity:.45}}
 .screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:calc(var(--sat) + 12px) 14px calc(var(--sab) + 12px);overflow:hidden}
 .screen.dim{background:rgba(25,30,20,.55)}
-#sTitle{background:linear-gradient(rgba(40,45,25,.15),rgba(40,45,25,.55))}
+#sTitle{flex-direction:column;justify-content:space-between;background:linear-gradient(rgba(40,45,25,.1),rgba(40,45,25,0) 40%,rgba(40,45,25,.35))}
+.ttop{padding:14px 18px 12px!important}.tbot{padding:12px!important}.tbot .row:first-of-type{margin-top:8px}
 .tpanel{width:min(92vw,380px);background:var(--paper);border-radius:22px;padding:20px 20px 16px;box-shadow:0 6px 0 rgba(0,0,0,.3);text-align:center}
 .tkick{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);font-weight:bold}
-h1{font-size:52px;line-height:.95;margin:8px 0 10px;letter-spacing:-.01em}
-.tsub{font-size:16px;line-height:1.35;margin:0 0 14px}
+h1{font-size:44px;line-height:1;margin:4px 0 8px;letter-spacing:-.01em}
+.tsub{font-size:15px;line-height:1.35;margin:0}
 .panel{width:min(92vw,380px);max-height:100%;background:var(--paper);border-radius:20px;padding:16px 18px;box-shadow:0 6px 0 rgba(0,0,0,.3);display:flex;flex-direction:column;gap:8px;overflow:hidden}
 .panel.tall{height:100%}
 .panel h2{margin:0;font-size:26px}
@@ -103,10 +105,14 @@ button:disabled{opacity:.45}
 #rotate{display:none;position:fixed;inset:0;background:var(--ink);color:var(--paper);align-items:center;justify-content:center;font-size:22px;z-index:20}
 @media (orientation:landscape) and (max-height:500px){#rotate{display:flex}}
 
+.tbot button small{display:block;font-size:12px;font-weight:normal;font-family:system-ui,sans-serif}
+@media (max-height:700px){h1{font-size:36px}.tsub{font-size:14px}.screen button:not(.back){min-height:46px;font-size:16px}}
+
 </style>
 </head>
 <body>
 <canvas id="cv"></canvas>
+<div id="duskov"></div>
 
 <div id="hud" class="hidden">
   <div id="hudTop">
@@ -124,10 +130,12 @@ button:disabled{opacity:.45}
   <div id="inGo">Hold anywhere to start</div></div></div>
 
 <div id="sTitle" class="screen">
-  <div class="tpanel">
+  <div class="tpanel ttop">
     <div class="tkick">Larch Close &middot; August</div>
-    <h1>Hosepipe<br>Ban</h1>
+    <h1>Hosepipe Ban</h1>
     <p class="tsub">Six weeks without rain. The neighbours are away and you've got their keys. Water their gardens before dark, and don't let anyone see you doing it.</p>
+  </div>
+  <div class="tpanel tbot">
     <button id="bPlay" class="big">Start watering</button>
     <div class="row"><button id="bStreet">The Close</button><button id="bDaily">Today's garden</button></div>
     <div class="row"><button id="bHeat">Heatwave</button><button id="bSettings">Settings</button></div>
@@ -232,7 +240,7 @@ function collide(x0,y0,z0,x1,y1,z1){
       if(z0>=u.z-.05&&z1<u.z&&z1>u.z-.5){HIT.type='unit';HIT.ref=u;HIT.z=u.z;return true;}
       if(z1<u.z-.05&&z1>u.z-.55){HIT.type='basketbase';HIT.ref=u;return true;}}}
   }
-  for(const gn of S.gnomes){const dx=x1-gn.x,dy=y1-gn.y;if(z1<.55&&dx*dx+dy*dy<.06){HIT.type='gnome';HIT.ref=gn;return true;}}
+  for(const gn of S.gnomes){const dx=x1-gn.x,dy=y1-gn.y;if(z1<.6&&dx*dx+dy*dy<.09){HIT.type='gnome';HIT.ref=gn;return true;}}
   const c=S.cat;if(c&&c.st!=='away'){const dx=x1-c.x,dy=y1-c.y;if(z1<.5&&dx*dx+dy*dy<.16){HIT.type='cat';return true;}}
   if(z1<=0){const t=z0/(z0-z1),x=x0+(x1-x0)*t,y=y0+(y1-y0)*t;HIT.x=x;HIT.y=y;HIT.z=0;
     for(const u of S.units)if(u.k==='seg'&&x>=u.x0&&x<=u.x1&&y>=u.y0&&y<=u.y1){HIT.type='unit';HIT.ref=u;return true;}
@@ -425,7 +433,7 @@ const L=[
 ];
 function need(lv){let n=0;for(const p of lv.pots||[])n+=p.cap||2.2;for(const p of lv.baskets||[])n+=p.cap||1.8;
   for(const b of lv.beds||[]){const c=b.n||Math.max(1,Math.round(Math.max(b.x1-b.x0,b.y1-b.y0)/1.4));n+=c*(b.cap||1.5);}return n;}
-function finish(lv){const n=need(lv);lv.need=n;if(!lv.water)lv.water=Math.ceil(n*(lv.waterF||2.6));lv.par=Math.max(1,Math.round((lv.water-n*lv.parF)*10)/10);lv.seed=lv.seed||U.hash(lv.id);return lv;}
+function finish(lv){const n=need(lv);lv.need=n;if(!lv.water)lv.water=Math.ceil(n*(lv.waterF||(lv.gen?2.8:lv.no<=5?3.4:lv.no<=13?3.0:2.8)));lv.par=Math.max(1,Math.round((lv.water-n*lv.parF)*10)/10);lv.seed=lv.seed||U.hash(lv.id);return lv;}
 L.forEach(finish);
 
 // --- reachability check: every plant must be hittable by some clean shot (jet, or spray for seedlings)
@@ -438,7 +446,7 @@ const PLANTS=['geranium','lavender','marigold','herbs','fern','hosta'];
 const SURN=['Ashworth','Begum','Carver','Doyle','Ellison','Fenwick','Gorski','Hale','Iqbal','Jarvis','Keane','Lowe','Moss','Nair','Oduya','Pearce','Quinn','Rafferty','Sowerby','Tran','Underwood','Vance','Whitlock','Yates'];
 function gen(seed,d){const r=U.rng(seed);const R=(a,b)=>a+r()*(b-a);const pick=a=>a[(r()*a.length)|0];
   for(let tries=0;tries<40;tries++){
-  const lv={id:'gen'+seed+'_'+tries,no:0,name:'',who:'The '+pick(SURN)+'s',line:'',time:Math.round(70+d*2),parF:Math.max(1.45,1.8-d*.03),pots:[],beds:[],baskets:[],hard:[PATIO],deco:[],gen:true,seed:seed*31+tries};
+  const lv={id:'gen'+seed+'_'+tries,no:0,name:'',who:(n=>'The '+n+(n.endsWith('s')?'es':'s'))(pick(SURN)),line:'',time:Math.round(70+d*2),parF:Math.max(1.45,1.8-d*.03),pots:[],beds:[],baskets:[],hard:[PATIO],deco:[],gen:true,seed:seed*31+tries};
   const occ=[[0,14.6,10,17.8]];const free=(x0,y0,x1,y1)=>x0>=.3&&x1<=9.7&&y0>=.6&&!occ.some(o=>x0<o[2]+.3&&x1>o[0]-.3&&y0<o[3]+.3&&y1>o[1]-.3);
   const place=(w,h,y0=.8,y1=14.2)=>{for(let k=0;k<60;k++){const x=R(.4,9.6-w),y=R(y0,y1-h);if(free(x,y,x+w,y+h)){occ.push([x,y,x+w,y+h]);return [x,y];}}return null;};
   // features unlocked by depth, pick a few
@@ -451,7 +459,7 @@ function gen(seed,d){const r=U.rng(seed);const R=(a,b)=>a+r()*(b-a);const pick=a
      while(u<.9){const w=R(.07,.11);items.push([u,u+w,R(.6,.9),pick(['shirt','towel','sheet','socks']),pick(cols)]);u+=w+R(.02,.08);}
      lv.wash={ax:.4,ay:y,bx:9.6,by:y2,items};lv.deco.push({k:'post',x:.4,y},{k:'post',x:9.6,y:y2});occ.push([0,Math.min(y,y2)-.4,10,Math.max(y,y2)+.4]);}
   if(use.has('seedlings')){const p=place(2.6,.9,11.6,14.2);if(p)lv.beds.push({x0:p[0],y0:p[1],x1:p[0]+2.6,y1:p[1]+.9,plant:'seedlings',fragile:true,n:2,cap:1.1});}
-  if(use.has('baskets')){const y=R(8,12.5),n=2+(r()<.4?1:0);const xs=n===2?[2.4,7.6]:[2.2,5,7.8];lv.deco.push({k:'pergola',x:xs[0]-1.1,y,x2:xs[n-1]+1.1});for(const x of xs)lv.baskets.push({x,y,z:2.25});}
+  if(use.has('baskets')){let y=0;for(let k=0;k<30;k++){const yy=R(8,12.5);if(free(1.1,yy-.7,8.9,yy+.7)){y=yy;break;}}const n=2+(r()<.4?1:0);const xs=n===2?[2.4,7.6]:[2.2,5,7.8];if(y)occ.push([xs[0]-1.1,y-.7,xs[n-1]+1.1,y+.7]);if(y)lv.deco.push({k:'pergola',x:xs[0]-1.1,y,x2:xs[n-1]+1.1});if(y)for(const x of xs)lv.baskets.push({x,y,z:2.25});}
   if(use.has('wind')){lv.wind={x:(r()<.5?-1:1)*R(1.6,2.4+d*.06),y:R(-.6,.6),ph:R(0,6)};lv.deco.push({k:'windsock',x:r()<.5?.4:9.6,y:.4});}
   if(use.has('window'))lv.window={x:R(2,8),first:R(6,10),warn:Math.max(.9,1.4-d*.03),watch:3,quiet:Math.max(4.5,7-d*.15),quietVar:4,rate:.42};
   if(use.has('cat'))lv.cat={delay:R(6,12),gap:Math.max(5,9-d*.2),dig:.22};
@@ -530,7 +538,7 @@ const RD=(()=>{
 let cv,g,W=0,H=0,dpr=1,s=30,ox=0,oy=0,bg=null,bgKey='',wetC=null,wg=null,WR=22,dryT=0,safeT=0,safeB=0;
 const ZK=.55,SHK=.75;
 const X=x=>ox+x*s,Y=(y,z)=>oy+(y-(z||0)*ZK)*s;
-function init(c){cv=c;g=cv.getContext('2d');resize();}
+let duskEl=null;function init(c){cv=c;g=cv.getContext('2d',{alpha:false});duskEl=document.getElementById('duskov');resize();}
 function resize(){dpr=Math.min(2,window.devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+'px';cv.style.height=H+'px';
   const cs=getComputedStyle(document.documentElement);safeT=parseFloat(cs.getPropertyValue('--sat'))||0;safeB=parseFloat(cs.getPropertyValue('--sab'))||0;
   const avail=H-safeT-safeB;s=Math.min(W/10.4,(avail-62)/20.7);ox=(W-10*s)/2;oy=H-safeB-6-17.5*s;bgKey='';}
@@ -678,12 +686,10 @@ function frame(S,t,opt){if(!S)return;buildBg(S);g.setTransform(dpr,0,0,dpr,0,0);
   for(const d of S.lv.deco||[])if(d.k==='windsock')drawSock(d,S,t);
   for(const u of S.units)drawGauge(u,S,t);
   drawDial(S);
-  // dusk
+  // dusk: a composited overlay (cheaper than painting the whole screen) plus lit windows next door
   const dk=S.t/S.time;const warm=Math.max(0,1-dk*1.6),blue=U.ease((dk-.35)/.65);
-  if(warm>0){g.fillStyle='rgba(255,150,60,'+(.1*warm)+')';g.fillRect(0,0,W,H);}
-  if(blue>0){g.fillStyle='rgba(22,30,72,'+(.5*blue)+')';g.fillRect(0,0,W,H);
-    // lit windows next door
-    g.globalAlpha=blue*.85;for(const wx of [1.2,3.4,8.8,11]){if(S.win&&Math.abs(wx-S.win.x)<1.4)continue;if(((wx*7)|0)%3===0)continue;const [x0,y0,x1,y1]=winRect(wx);g.fillStyle='#f2c46a';g.fillRect(x0,y0,x1-x0,y1-y0);}g.globalAlpha=1;}
+  if(duskEl){const a=Math.max(.1*warm,.5*blue);const k=a>0?(.1*warm)/(a||1):0;duskEl.style.background=blue>0?'rgba(22,30,72,'+(.5*blue).toFixed(3)+')':'rgba(255,150,60,'+(.1*warm).toFixed(3)+')';}
+  if(blue>0){g.globalAlpha=blue*.85;for(const wx of [1.2,3.4,8.8,11]){if(S.win&&Math.abs(wx-S.win.x)<1.4)continue;if(((wx*7)|0)%3===0)continue;const [x0,y0,x1,y1]=winRect(wx);g.fillStyle='#f2c46a';g.fillRect(x0,y0,x1-x0,y1-y0);}g.globalAlpha=1;}
   if(opt.flash>0){g.fillStyle='rgba(255,255,255,'+opt.flash*.25+')';g.fillRect(0,0,W,H);}
 }
 function drainWet(S){const q=SIM.WQ,n=q.n;if(!wg)return;
@@ -826,7 +832,7 @@ const SV={K:'hosepipeban.v1',D:null,
   save(){try{localStorage.setItem(this.K,JSON.stringify(this.D));}catch(e){}}};
 SV.load();
 
-const GAME={state:'title',mode:'street',lv:null,idx:0,started:false,endT:0,heat:null,coach:null,float:[],flash:0,lastResult:null,touchId:null,tx:0,ty:0,daily:null,setBack:'sTitle'};
+const GAME={lastHits:0,hitT:0,state:'title',mode:'street',lv:null,idx:0,started:false,endT:0,heat:null,coach:null,float:[],flash:0,lastResult:null,touchId:null,tx:0,ty:0,daily:null,setBack:'sTitle'};
 const LV=LEVELS.list;
 function unlocked(i){return i===0||(SV.D.stars[LV[i-1].id]||0)>0;}
 function heatOpen(){return (SV.D.stars.no5||0)>0;}
@@ -841,8 +847,8 @@ const TITLE_LV=Object.assign({},LV[0],{id:'title',pots:[],water:1e6,time:1e6});
 function toTitle(){GAME.state='title';$('hud').classList.add('hidden');$('intro').classList.add('hidden');AU.silence();
   SIM.newLevel(TITLE_LV);refreshTitle();show('sTitle');}
 function refreshTitle(){const nx=LV.findIndex(l=>!(SV.D.stars[l.id]>0));$('bPlay').textContent=nx<0?'Back to the Close':nx===0?'Start watering':'Carry on: '+LV[nx].name;
-  $('bHeat').disabled=!heatOpen();$('bHeat').textContent=heatOpen()?'Heatwave':'Heatwave (after No. 5)';
-  $('bDaily').disabled=!dailyOpen();$('bDaily').textContent=dailyOpen()?"Today's garden":"Today's garden (after No. 1)";}
+  $('bHeat').disabled=!heatOpen();$('bHeat').innerHTML=heatOpen()?'Heatwave':'Heatwave<small>after No. 5</small>';
+  $('bDaily').disabled=!dailyOpen();$('bDaily').innerHTML=dailyOpen()?"Today's garden":"Today's garden<small>after No. 1</small>";}
 function street(){let tot=0;const h=$('houses');h.innerHTML='';
   LV.forEach((l,i)=>{const st=SV.D.stars[l.id]||0;tot+=st;const b=document.createElement('button');b.className='house'+(unlocked(i)?'':' locked');b.id='h-'+l.id;
     b.innerHTML='<span class="num">'+l.no+'</span><span class="nm">'+l.who+'<small>'+(unlocked(i)?l.line:'Water No. '+LV[i-1].no+' first')+'</small></span><span class="st">'+'&#9733;'.repeat(st)+'<i>'+'&#9733;'.repeat(3-st)+'</i></span>';
@@ -851,7 +857,7 @@ function street(){let tot=0;const h=$('houses');h.innerHTML='';
 function tap(){AU.init();AU.play('tick');}
 
 // ---------- starting gardens
-function begin(lv,skipIntro){const S=SIM.newLevel(lv);RD.invalidate();GAME.lv=lv;GAME.state='play';GAME.started=false;GAME.endT=0;GAME.float=[];GAME.touchId=null;
+function begin(lv,skipIntro){const S=SIM.newLevel(lv);GAME.lastHits=0;RD.invalidate();GAME.lv=lv;GAME.state='play';GAME.started=false;GAME.endT=0;GAME.float=[];GAME.touchId=null;
   hideAll();$('hud').classList.remove('hidden');
   $('hudName').textContent=(lv.name?lv.name+' \u00b7 ':'')+lv.who+(GAME.mode==='heat'?'  ('+GAME.heat.n+')':'');
   const spray=lv.beds&&lv.beds.some(b=>b.fragile)||(SV.D.stars.no9||0)>0||GAME.mode!=='street';$('bNozzle').classList.toggle('hidden',!spray);nozzleUI();
@@ -910,7 +916,7 @@ function floatAt(o,txt,col){if(!o)return;GAME.float.push({x:o.x,y:o.y,z:o.h||o.z
 let toastT=0;function toastCoach(t){if(GAME.coach&&COACH[GAME.coach.k]&&GAME.coach.step<COACH[GAME.coach.k].length)return;setCoach(t);toastT=3.2;}
 
 // ---------- results
-function finish(){const S=SIM.S,st=SIM.stars(),lv=GAME.lv;GAME.state='result';AU.silence();
+function finish(){const S=SIM.S,st=SIM.stars(),lv=GAME.lv;GAME.state='result';AU.silence();setCoach('');toastT=0;
   const won=st.won;const r={won,stars:st.n,why:S.why,water:S.water,used:S.used,t:S.t,tidy:st.tidy,par:st.par,mode:GAME.mode};GAME.lastResult=r;
   SV.D.stats.litres+=S.used;
   const kick=GAME.mode==='heat'?'Heatwave \u00b7 garden '+GAME.heat.n:GAME.mode==='daily'?"Today's garden":lv.name+' \u00b7 '+lv.who;$('rKick').textContent=kick;
@@ -949,6 +955,8 @@ cv.addEventListener('pointerdown',down,{passive:false});cv.addEventListener('poi
 cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);cv.addEventListener('lostpointercapture',up);
 document.addEventListener('touchmove',e=>{if(!e.target.closest||!e.target.closest('#houses,.sl'))e.preventDefault();},{passive:false});
 document.addEventListener('contextmenu',e=>e.preventDefault());
+// iOS only unlocks Web Audio inside certain gestures; try on all of them (init() is idempotent)
+for(const n of ['touchend','pointerup','click'])document.addEventListener(n,()=>AU.init(),{passive:true});
 function pause(){if(GAME.state!=='play')return;GAME.state='paused';GAME.touchId=null;SIM.setFlow(false);AU.silence();show('sPause');}
 function resume(){if(GAME.state!=='paused')return;hideAll();GAME.state='play';}
 document.addEventListener('visibilitychange',()=>{if(document.hidden){pause();AU.suspend();}else AU.resume();});
@@ -991,9 +999,11 @@ function loop(now){requestAnimationFrame(loop);let dt=(now-last)/1000;last=now;i
     if(GAME.started)SIM.step(dt);else{S.flowing=false;}
     drain();coachTick(dt);if(toastT>0){toastT-=dt;if(toastT<=0)setCoach('');}
     if(S.state!=='play'){GAME.endT+=dt;if(GAME.endT>(S.state==='won'?1.0:1.2))finish();}
+    // a faint tick in the hand while the water is landing on a plant (Android vibrates; iOS ignores it)
+    if(S.hits>GAME.lastHits){GAME.hitT-=dt;if(GAME.hitT<=0){GAME.hitT=.14;vib(5);}}GAME.lastHits=S.hits;
     hud();AU.update(S,dt,S.t/S.time);}
   else if(GAME.state==='result'){SIM.step(dt);AU.update(null,dt,0);}
-  else if(GAME.state==='title'&&S){const k=now/1000;S.flowing=true;S.aimAz=Math.sin(k*.45)*.55;S.aimEl=20+Math.sin(k*.8)*12;S.t=0;SIM.step(dt);AU.update(null,dt,0);}
+  else if(GAME.state==='title'&&S){const k=now/1000;S.flowing=true;S.aimAz=Math.sin(k*.45)*.32;S.aimEl=10+Math.sin(k*.8)*6;S.t=0;SIM.step(dt);AU.update(null,dt,0);}
   GAME.flash=Math.max(0,GAME.flash-dt*2);
   if(S){RD.frame(S,now/1000,{reticle:GAME.state==='play'&&GAME.started&&S.state==='play'?aimMarker(S):null,flash:GAME.flash});drawFloat(dt);}}
 function drawFloat(dt){if(!GAME.float.length)return;const g=cv.getContext('2d');g.textAlign='center';g.font='bold '+Math.round(RD.s*.42)+'px Georgia,serif';

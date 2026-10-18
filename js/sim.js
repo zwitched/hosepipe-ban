@@ -48,7 +48,7 @@ function collide(x0,y0,z0,x1,y1,z1){
       if(z0>=u.z-.05&&z1<u.z&&z1>u.z-.5){HIT.type='unit';HIT.ref=u;HIT.z=u.z;return true;}
       if(z1<u.z-.05&&z1>u.z-.55){HIT.type='basketbase';HIT.ref=u;return true;}}}
   }
-  for(const gn of S.gnomes){const dx=x1-gn.x,dy=y1-gn.y;if(z1<.55&&dx*dx+dy*dy<.06){HIT.type='gnome';HIT.ref=gn;return true;}}
+  for(const gn of S.gnomes){const dx=x1-gn.x,dy=y1-gn.y;if(z1<.6&&dx*dx+dy*dy<.09){HIT.type='gnome';HIT.ref=gn;return true;}}
   const c=S.cat;if(c&&c.st!=='away'){const dx=x1-c.x,dy=y1-c.y;if(z1<.5&&dx*dx+dy*dy<.16){HIT.type='cat';return true;}}
   if(z1<=0){const t=z0/(z0-z1),x=x0+(x1-x0)*t,y=y0+(y1-y0)*t;HIT.x=x;HIT.y=y;HIT.z=0;
     for(const u of S.units)if(u.k==='seg'&&x>=u.x0&&x<=u.x1&&y>=u.y0&&y<=u.y1){HIT.type='unit';HIT.ref=u;return true;}

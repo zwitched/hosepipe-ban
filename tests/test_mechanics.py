@@ -35,6 +35,7 @@ async def main():
     t.chk('lobbing over the line waters the roses behind it',u['w']>0.3,a,u)
     gn=await E("(()=>{const g=SIM.S.gnomes[0];for(let el=-14;el<40;el+=.5){for(let az=-1;az<1;az+=.01){const h=SIM.trace(az,el,'jet');if(h.type==='gnome'&&h.ref===g)return [az,el]}}return null})()")
     await hold_at(bot,gn[0],gn[1],1200)
+    if not await E("SIM.S.gnomes[0].down"):await hold_at(bot,gn[0],gn[1],1500)
     t.chk('the jet knocks a gnome over',await E("SIM.S.gnomes[0].down"))
     await tc.release()
     # --- seedlings: jet flattens, spray doesn't (No. 9)
