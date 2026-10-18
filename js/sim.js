@@ -4,7 +4,7 @@
 const SIM=(()=>{
 const G=30,DT=1/120,NOZ_Z=1.0,EL_MIN=-14,EL_MAX=80,AZ_MAX=1.5,FENCE_H=1.8,GW=10,GH=17;
 const MODES={jet:{v:21,rate:120,spread:.005,vs:.01,flow:1,wind:.55,drag:.04},spray:{v:14,rate:230,spread:.13,vs:.1,flow:1,wind:1.3,drag:.55}};
-const OVER=1.3;            // fill above this spills over and the plant counts as overwatered
+const OVER=1.6;            // fill above this spills over and the plant counts as overwatered
 // particle pool, used as a ring in emission order so neighbours can be drawn as one continuous stream
 const N=2048,px=new Float32Array(N),py=new Float32Array(N),pz=new Float32Array(N),vx=new Float32Array(N),vy=new Float32Array(N),vz=new Float32Array(N),
  pw=new Float32Array(N),age=new Float32Array(N),alive=new Uint8Array(N),pm=new Uint8Array(N),burst=new Uint32Array(N);
@@ -69,11 +69,11 @@ function newLevel(lv,opts){
     aimAz:lv.az||0,aimEl:lv.el!=null?lv.el:16,naz:lv.az||0,nel:lv.el!=null?lv.el:16,units:[],beds:[],gnomes:[],trees:[],wash:null,gh:null,cat:null,win:null,
     wind:{x:0,y:0},susp:0,state:'play',why:'',endT:0,acc:0,flowT:0,ev:[],sog:0,flat:0,soaked:0,wasted:0,used:0,over:0,hits:0,
     imp:[0,0,0,0],rng:U.rng(lv.seed||1),seqDone:0,lastDone:-9};
-  for(const p of lv.pots||[])S.units.push(Object.assign({k:'pot',r:.42,h:.55,cap:1.6,plant:'geranium'},p,{w:p.w0||0}));
-  for(const p of lv.baskets||[])S.units.push(Object.assign({k:'basket',r:.5,z:2.3,cap:1.4,plant:'trail'},p,{w:p.w0||0}));
+  for(const p of lv.pots||[])S.units.push(Object.assign({k:'pot',r:.42,h:.55,cap:2.2,plant:'geranium'},p,{w:p.w0||0}));
+  for(const p of lv.baskets||[])S.units.push(Object.assign({k:'basket',r:.5,z:2.3,cap:1.8,plant:'trail'},p,{w:p.w0||0}));
   for(const b of lv.beds||[]){const bed=Object.assign({plant:'beans',fragile:false},b);bed.segs=[];S.beds.push(bed);
     const n=b.n||Math.max(1,Math.round(Math.max(b.x1-b.x0,b.y1-b.y0)/1.4));const hor=(b.x1-b.x0)>=(b.y1-b.y0);
-    for(let i=0;i<n;i++){const a=i/n,c=(i+1)/n;const u={k:'seg',bed,cap:b.cap||1.1,plant:bed.plant,fragile:!!bed.fragile,w:0,
+    for(let i=0;i<n;i++){const a=i/n,c=(i+1)/n;const u={k:'seg',bed,cap:b.cap||1.5,plant:bed.plant,fragile:!!bed.fragile,w:0,
       x0:hor?U.lerp(b.x0,b.x1,a):b.x0,x1:hor?U.lerp(b.x0,b.x1,c):b.x1,y0:hor?b.y0:U.lerp(b.y0,b.y1,a),y1:hor?b.y1:U.lerp(b.y0,b.y1,c)};
       u.x=(u.x0+u.x1)/2;u.y=(u.y0+u.y1)/2;S.units.push(u);bed.segs.push(u);}}
   for(const u of S.units){u.done=u.w>=1;u.sog=false;u.dmg=0;u.flat=false;u.perk=u.done?1:0;u.wob=0;u.spill=0;u.id=S.units.indexOf(u);}
@@ -103,7 +103,7 @@ function absorb(u,water,jet){
   if(u.fragile&&jet&&!u.flat){u.dmg+=water*2.6;if(u.dmg>=1){u.flat=true;S.flat++;ev('flat',{u});}}
   if(u.w>=OVER){S.wasted+=water;u.spill=1;if(!u.sog){u.sog=true;S.sog++;ev('sog',{u});}return;}
   u.w+=water/u.cap;
-  if(!u.done&&u.w>=1){u.done=true;S.seqDone++;ev('done',{u,n:S.seqDone});}
+  if(!u.done&&u.w>=1){u.done=true;u.ring=1;u.pv=(u.pv||0)+4;S.seqDone++;ev('done',{u,n:S.seqDone});}
   if(u.w>=OVER){u.spill=1;if(!u.sog){u.sog=true;S.sog++;ev('sog',{u});}}
 }
 
@@ -164,12 +164,12 @@ function tick(dt){
   else{S.acc=0;}
   stepParticles(dt);
   for(let i=0;i<M;i++){if(sl[i]<=0)continue;sl[i]-=dt;svz[i]-=G*.5*dt;sx[i]+=svx[i]*dt;sy[i]+=svy[i]*dt;sz[i]+=svz[i]*dt;if(sz[i]<0){sz[i]=0;svz[i]*=-.2;svx[i]*=.5;svy[i]*=.5;}}
-  for(const u of S.units){u.wob=Math.max(0,u.wob-dt*3);u.spill=Math.max(0,u.spill-dt*2);const tp=u.done?1:Math.min(.6,u.w*.6);u.perk+=(tp-u.perk)*Math.min(1,dt*9);}
+  for(const u of S.units){u.wob=Math.max(0,u.wob-dt*3);u.spill=Math.max(0,u.spill-dt*2);const tp=u.done?1:Math.min(.6,u.w*.6);u.pv=(u.pv||0)+((tp-u.perk)*160-(u.pv||0)*13)*dt;u.perk+=u.pv*dt;if(u.ring>0)u.ring=Math.max(0,u.ring-dt*1.6);}
   for(const g of S.gnomes)if(g.down)g.fall=Math.min(1,g.fall+dt*5);
   for(const t of S.trees)t.shake=Math.max(0,t.shake-dt*2);
   if(S.wash)for(const it of S.wash.items){it.sw=Math.max(0,it.sw-dt*2);if(!it.soaked)it.wet=Math.max(0,it.wet-dt*.01);}
   if(play){stepCat(dt);stepWindow(dt);
-    if(S.units.every(u=>u.done)){S.state='won';S.endT=S.t;S.flowing=false;ev('win');}
+    if(S.units.length&&S.units.every(u=>u.done)){S.state='won';S.endT=S.t;S.flowing=false;ev('win');}
     else if(S.susp>=1){S.susp=1;fail('caught');}
     else if(S.t>=S.time){S.t=S.time;fail('dark');}
     else if(S.water<=0&&live===0)fail('dry');}

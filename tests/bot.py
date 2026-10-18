@@ -5,7 +5,8 @@ from util import *
 FIXJS=(ROOT/'tests/fixture.js').read_text()
 async def fixture(pg):await pg.add_script_tag(content=FIXJS)
 class Bot:
-  def __init__(s,pg,tc,noise=0.0,react=0.0,seed=1):
+  def __init__(s,pg,tc,noise=0.0,react=0.0,seed=1,lead=0.8):
+    s.lead=lead
     s.pg=pg;s.tc=tc;s.noise=noise;s.react=react;s.r=random.Random(seed);s.anchor=None;s.E=pg.evaluate
   async def geo(s):
     return await s.E("({s:RD.s,W:innerWidth,H:innerHeight,sens:SV.D.opt.sens,R:SIM.range(SIM.S.aimEl,SIM.S.mode)})")
@@ -67,7 +68,7 @@ class Bot:
       await s.steer(az,el)
       # hold until it's done, re-checking the window and the fill
       for k in range(80):
-        y=await s.E(f"(()=>{{const u=SIM.S.units[{u['id']}];return [u.done,u.w,SIM.S.state,SIM.S.win?SIM.S.win.st:'',SIM.S.cat&&SIM.S.cat.st==='dig']}})()")
+        y=await s.E(f"(()=>{{const u=SIM.S.units[{u['id']}];return [u.done||u.w+SIM.live/120/u.cap*{s.lead}>=1.05,u.w,SIM.S.state,SIM.S.win?SIM.S.win.st:'',SIM.S.cat&&SIM.S.cat.st==='dig']}})()")
         if y[0] or y[2]!='play' or y[3] in('watch','twitch') or y[4]:break
         if k%6==5:  # drift (wind, noise): re-aim
           a=await s.E(f"BOT.aim({u['id']},'{m}')")

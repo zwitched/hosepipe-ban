@@ -7,7 +7,7 @@ const X=x=>ox+x*s,Y=(y,z)=>oy+(y-(z||0)*ZK)*s;
 function init(c){cv=c;g=cv.getContext('2d');resize();}
 function resize(){dpr=Math.min(2,window.devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+'px';cv.style.height=H+'px';
   const cs=getComputedStyle(document.documentElement);safeT=parseFloat(cs.getPropertyValue('--sat'))||0;safeB=parseFloat(cs.getPropertyValue('--sab'))||0;
-  const avail=H-safeT-safeB;s=Math.min(W/10.4,avail/19.4);ox=(W-10*s)/2;oy=H-safeB-6-17.5*s;bgKey='';}
+  const avail=H-safeT-safeB;s=Math.min(W/10.4,(avail-58)/20.7);ox=(W-10*s)/2;oy=H-safeB-6-17.5*s;bgKey='';}
 function toWorld(px,py){return [(px-ox)/s,(py-oy)/s];}
 function toScreen(x,y,z){return [X(x),Y(y,z)];}
 
@@ -49,9 +49,9 @@ function buildBg(S){const lv=S.lv;const key=lv.id+'|'+W+'x'+H+'|'+dpr;if(key===b
 
 function drawHouses(c,S,r){const top=Y(0,FENCE_TOP());
   // their gardens beyond the fence
-  c.fillStyle='#8c8650';c.fillRect(0,Y(-1.6),W,Y(0)-Y(-1.6));
+  c.fillStyle='#8c8650';c.fillRect(0,Y(-1),W,Y(0)-Y(-1));
   // house backs: wall from y=-1.8 rising 5 units
-  const wy=Y(-1.8),wt=Y(-1.8,5.2);c.fillStyle='#9b5d45';c.fillRect(0,wt,W,wy-wt);
+  const wy=Y(-1),wt=Y(-1,4.6);c.fillStyle='#9b5d45';c.fillRect(0,wt,W,wy-wt);
   for(let y=wt;y<wy;y+=4){c.fillStyle='rgba(60,25,15,.18)';c.fillRect(0,y,W,1);}
   // party walls between houses
   for(const x of [-2.6,12.6,5]){c.fillStyle='rgba(50,20,10,.35)';c.fillRect(X(x)-2,wt,4,wy-wt);}
@@ -64,7 +64,7 @@ function drawHouses(c,S,r){const top=Y(0,FENCE_TOP());
   // a drainpipe
   c.fillStyle='#3a3a3a';c.fillRect(X(5)-3,wt,5,wy-wt);}
 function FENCE_H(){return 1.8;}function FENCE_TOP(){return 1.8;}
-function winRect(wx){const x0=X(wx-.7),x1=X(wx+.7),y0=Y(-1.8,4.2),y1=Y(-1.8,2.3);return [x0,y0,x1,y1];}
+function winRect(wx){const x0=X(wx-.7),x1=X(wx+.7),y0=Y(-1,4),y1=Y(-1,2.25);return [x0,y0,x1,y1];}
 function drawWindowFrame(c,wx,big){const [x0,y0,x1,y1]=winRect(wx);c.fillStyle='#e9e4d8';c.fillRect(x0-3,y0-3,x1-x0+6,y1-y0+8);c.fillStyle='#2f3a44';c.fillRect(x0,y0,x1-x0,y1-y0);
   if(!big){c.fillStyle='rgba(180,200,210,.25)';c.fillRect(x0+2,y0+2,(x1-x0)*.4,(y1-y0)*.5);c.fillStyle='#e9e4d8';c.fillRect((x0+x1)/2-1.5,y0,3,y1-y0);}}
 function drawFences(c,r){
@@ -111,7 +111,7 @@ const PL={geranium:{leaf:'#4f7d3a',dry:'#8a8048',n:7,len:.32,wid:.2,fl:'#d8343a'
  lettuce:{leaf:'#8fbf4f',dry:'#a49a58',n:8,len:.2,wid:.15,fl:null},
  beans:{leaf:'#4d8a3a',dry:'#878046',n:7,len:.24,wid:.16,fl:'#d8402a',nf:3,fs:.06,cane:1},
  seedlings:{leaf:'#9ccc5a',dry:'#b4ac6a',n:2,len:.1,wid:.06,fl:null}};
-function plant(c,kind,x,y,sc,perk,wob,t,seed,dmg){const p=PL[kind]||PL.geranium;const k=.62+.38*perk;const col=mix(p.dry,p.leaf,Math.min(1,perk*1.15));
+function plant(c,kind,x,y,sc,perk,wob,t,seed,dmg){const p=PL[kind]||PL.geranium;const k=.62+.38*perk;perk=U.clamp(perk,0,1);const col=mix(p.dry,p.leaf,Math.min(1,perk*1.15));
   const sway=Math.sin(t*16+seed)*wob*.25;const R=p.len*sc*k;
   if(p.frond||p.spike){c.lineCap='round';}
   for(let i=0;i<p.n;i++){const a=i/p.n*6.2832+seed+sway;const droop=(1-perk)*.35;const L=R*(.8+((i*37+seed*13)%10)/30);
@@ -274,7 +274,8 @@ function drawStream(S,shadow){const P=SIM.P,n=P.N,h=SIM.head;
     g.strokeStyle='rgba(225,240,250,.6)';g.lineWidth=1.4;g.beginPath();for(let i=0;i<n;i++){if(!P.alive[i]||!P.pm[i])continue;const x=X(P.px[i]),y=Y(P.py[i],P.pz[i]);g.moveTo(x,y);g.lineTo(x-P.vx[i]*s*.012,y-(P.vy[i]-P.vz[i]*ZK)*s*.012);}g.stroke();}
   else{g.fillStyle='rgba(40,35,10,.12)';for(let i=0;i<n;i++){if(!P.alive[i]||!P.pm[i])continue;g.fillRect(X(P.px[i]+P.pz[i]*SHK),Y(P.py[i]),2,2);}}}
 function drawSplash(){const P=SIM.SP;for(let i=0;i<P.M;i++){if(P.sl[i]<=0)continue;const a=Math.min(1,P.sl[i]*4);g.fillStyle=P.sc[i]===1?'rgba(70,45,25,'+a+')':'rgba(235,245,255,'+a*.85+')';const x=X(P.sx[i]),y=Y(P.sy[i],P.sz[i]);g.fillRect(x-1,y-1,2,2);}}
-function drawGauge(u,S,t){if(S.state!=='play')return;let x,y,r;if(u.k==='pot'){x=X(u.x);y=Y(u.y,u.h)-u.r*s*.1;r=u.r*s+5;}else if(u.k==='basket'){x=X(u.x);y=Y(u.y,u.z);r=u.r*s+5;}else{x=X(u.x);y=Y(u.y);r=s*.26;}
+function drawGauge(u,S,t){if(u.ring>0){const rr=(1-u.ring);const [cx,cy]=u.k==='pot'?[X(u.x),Y(u.y,u.h)]:u.k==='basket'?[X(u.x),Y(u.y,u.z)]:[X(u.x),Y(u.y)];g.strokeStyle='rgba(190,240,140,'+u.ring*.9+')';g.lineWidth=2+u.ring*3;g.beginPath();g.arc(cx,cy,s*(.4+rr*.9),0,6.283);g.stroke();}
+  if(S.state!=='play')return;let x,y,r;if(u.k==='pot'){x=X(u.x);y=Y(u.y,u.h)-u.r*s*.1;r=u.r*s+5;}else if(u.k==='basket'){x=X(u.x);y=Y(u.y,u.z);r=u.r*s+5;}else{x=X(u.x);y=Y(u.y);r=s*.26;}
   const recent=(u.wob>0||!u.done);const f=Math.min(1,u.w/SIM.OVER);const a=u.done&&!u.wob?.35:.95;if(u.k==='seg'&&u.done&&!u.wob&&!u.sog&&!u.flat)return;
   g.globalAlpha=a;g.lineWidth=u.k==='seg'?3:3.5;g.strokeStyle='rgba(20,20,10,.45)';g.beginPath();g.arc(x,y,r,0,6.283);g.stroke();
   if(f>0){g.strokeStyle=u.sog?'#e04a2c':u.done?'#8fe05a':'#7cc4ff';g.beginPath();g.arc(x,y,r,-1.5708,-1.5708+f*6.283);g.stroke();}
@@ -285,5 +286,5 @@ function drawGauge(u,S,t){if(S.state!=='play')return;let x,y,r;if(u.k==='pot'){x
 function drawDial(S){const cx=X(S.gx)+s*1.25,cy=Y(S.gy+.55),r=s*.62;g.save();g.globalAlpha=.85;g.fillStyle='rgba(30,25,15,.35)';g.beginPath();g.moveTo(cx,cy);g.arc(cx,cy,r,-Math.PI*.5,0);g.closePath();g.fill();
   g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=1;g.beginPath();const a45=-Math.PI/4;g.moveTo(cx,cy);g.lineTo(cx+Math.cos(a45)*r,cy+Math.sin(a45)*r);g.stroke();
   const a=-S.nel*Math.PI/180;g.strokeStyle='#f3e9c8';g.lineWidth=2.5;g.beginPath();g.moveTo(cx,cy);g.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);g.stroke();g.restore();}
-return {init,resize,frame,toWorld,toScreen,get s(){return s;},get W(){return W;},get H(){return H;},get oy(){return oy;},winRect:wx=>winRect(wx),invalidate(){bgKey='';}};
+return {_plant:plant,init,resize,frame,toWorld,toScreen,get s(){return s;},get W(){return W;},get H(){return H;},get oy(){return oy;},winRect:wx=>winRect(wx),invalidate(){bgKey='';}};
 })();

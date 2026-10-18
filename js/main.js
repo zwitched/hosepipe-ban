@@ -18,8 +18,9 @@ function vib(ms){if(SV.D.opt.vib&&navigator.vibrate)try{navigator.vibrate(ms);}c
 const SCREENS=['sTitle','sStreet','sHeat','sPause','sResult','sSettings'];
 function show(id){for(const s of SCREENS)$(s).classList.toggle('hidden',s!==id);}
 function hideAll(){for(const s of SCREENS)$(s).classList.add('hidden');}
+const TITLE_LV=Object.assign({},LV[0],{id:'title',pots:[],water:1e6,time:1e6});
 function toTitle(){GAME.state='title';$('hud').classList.add('hidden');$('intro').classList.add('hidden');AU.silence();
-  SIM.newLevel(LV[0]);refreshTitle();show('sTitle');}
+  SIM.newLevel(TITLE_LV);refreshTitle();show('sTitle');}
 function refreshTitle(){const nx=LV.findIndex(l=>!(SV.D.stars[l.id]>0));$('bPlay').textContent=nx<0?'Back to the Close':nx===0?'Start watering':'Carry on: '+LV[nx].name;
   $('bHeat').disabled=!heatOpen();$('bHeat').textContent=heatOpen()?'Heatwave':'Heatwave (after No. 5)';
   $('bDaily').disabled=!dailyOpen();$('bDaily').textContent=dailyOpen()?"Today's garden":"Today's garden (after No. 1)";}
@@ -172,7 +173,8 @@ function loop(now){requestAnimationFrame(loop);let dt=(now-last)/1000;last=now;i
     drain();coachTick(dt);if(toastT>0){toastT-=dt;if(toastT<=0)setCoach('');}
     if(S.state!=='play'){GAME.endT+=dt;if(GAME.endT>(S.state==='won'?1.0:1.2))finish();}
     hud();AU.update(S,dt,S.t/S.time);}
-  else if(GAME.state==='result'||GAME.state==='title'){if(S&&GAME.state==='result')SIM.step(dt);AU.update(null,dt,0);}
+  else if(GAME.state==='result'){SIM.step(dt);AU.update(null,dt,0);}
+  else if(GAME.state==='title'&&S){const k=now/1000;S.flowing=true;S.aimAz=Math.sin(k*.45)*.55;S.aimEl=20+Math.sin(k*.8)*12;S.t=0;SIM.step(dt);AU.update(null,dt,0);}
   GAME.flash=Math.max(0,GAME.flash-dt*2);
   if(S){RD.frame(S,now/1000,{reticle:GAME.state==='play'&&GAME.started&&S.state==='play'?aimMarker(S):null,flash:GAME.flash});drawFloat(dt);}}
 function drawFloat(dt){if(!GAME.float.length)return;const g=cv.getContext('2d');g.textAlign='center';g.font='bold '+Math.round(RD.s*.42)+'px Georgia,serif';

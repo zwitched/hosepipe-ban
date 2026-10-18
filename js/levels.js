@@ -17,7 +17,7 @@ const L=[
  beds:[{x0:.8,y0:2.4,x1:4.2,y1:3.6,plant:'roses',n:2},{x0:5.8,y0:2.4,x1:9.2,y1:3.6,plant:'roses',n:2}],pots:[{x:2.2,y:11.8,plant:'fern'},{x:7.8,y:11.8,plant:'lavender'}],
  gnomes:[[3.1,5.6],[6.6,5.2,1]],hard:[PATIO],deco:[{k:'post',x:.4,y:8.4},{k:'post',x:9.6,y:7.9},{k:'basket',x:8.6,y:15.8}]},
 {id:'no9',no:9,name:'No. 9',who:'Dev and Sam',line:'Seedlings. Tap the nozzle to SPRAY or the jet will flatten them.',time:80,parF:1.7,
- beds:[{x0:1.4,y0:12.4,x1:4.2,y1:13.3,plant:'seedlings',fragile:true,n:2,cap:.8},{x0:5.8,y0:12.4,x1:8.6,y1:13.3,plant:'seedlings',fragile:true,n:2,cap:.8}],
+ beds:[{x0:1.4,y0:12.4,x1:4.2,y1:13.3,plant:'seedlings',fragile:true,n:2,cap:1.1},{x0:5.8,y0:12.4,x1:8.6,y1:13.3,plant:'seedlings',fragile:true,n:2,cap:1.1}],
  pots:[{x:2.5,y:5,plant:'hosta'},{x:5,y:3.4,plant:'marigold'},{x:7.5,y:5,plant:'herbs'}],hard:[PATIO,[0,14,10,15]],deco:[{k:'trampoline',x:7.6,y:8.8,r:1.5},{k:'bike',x:1.3,y:9}],coach:5},
 {id:'no11',no:11,name:'No. 11',who:'Mr Adeyemi',line:'Windy. Watch the windsock and aim upwind.',time:75,parF:1.7,wind:{x:2.6,y:0,ph:.6},
  beds:[{x0:.5,y0:3,x1:1.6,y1:12,plant:'lettuce',n:5},{x0:8.4,y0:3,x1:9.5,y1:12,plant:'lettuce',n:5}],pots:[{x:5,y:5.5,plant:'geranium'},{x:5,y:10,plant:'fern'}],
@@ -29,7 +29,7 @@ const L=[
  beds:[{x0:1,y0:3,x1:4,y1:4.2,plant:'lettuce',n:2},{x0:6,y0:3,x1:9,y1:4.2,plant:'lettuce',n:2},{x0:1,y0:7.5,x1:4,y1:8.7,plant:'beans',n:2},{x0:6,y0:7.5,x1:9,y1:8.7,plant:'beans',n:2}],
  hard:[PATIO,[4.4,0,5.6,15]],deco:[{k:'compost',x:9,y:12.6,w:1.2,h:1.2},{k:'shed',x:.2,y:11.4,w:1.6,h:2}]},
 {id:'no17',no:17,name:'No. 17',who:'Old Mr Pryce',line:'Tomatoes in the greenhouse. Keep it low and go through the door.',time:80,parF:1.7,
- gh:{x0:1,y0:2.4,x1:5.6,y1:6.5,d0:2.35,d1:4.35},pots:[{x:2.6,y:3.8,plant:'tomato',h:.7,cap:1.8},{x:3.4,y:3.1,plant:'tomato',h:.7,cap:1.8},{x:4.05,y:4.5,plant:'tomato',h:.7,cap:1.8},{x:8,y:11,plant:'geranium'}],
+ gh:{x0:1,y0:2.4,x1:5.6,y1:6.5,d0:2.35,d1:4.35},pots:[{x:2.6,y:3.8,plant:'tomato',h:.7,cap:2.2},{x:3.4,y:3.1,plant:'tomato',h:.7,cap:2.2},{x:4.05,y:4.5,plant:'tomato',h:.7,cap:2.2},{x:8,y:11,plant:'geranium'}],
  beds:[{x0:7.4,y0:2.4,x1:9.3,y1:7,plant:'roses',n:3}],hard:[PATIO,[2.4,6.5,4.3,15]],deco:[{k:'butt',x:6,y:2.6}]},
 {id:'no19',no:19,name:'No. 19',who:'The Hallorans',line:'The apple tree catches anything you lob. Shoot under it.',time:80,parF:1.7,
  trees:[{x:5,y:6.4,r:2.2,z0:2.75}],beds:[{x0:2.6,y0:5.8,x1:7.4,y1:7,plant:'lettuce',n:3},{x0:1.5,y0:1.6,x1:8.5,y1:2.6,plant:'beans',n:4}],baskets:[{x:1,y:12.5,z:2.2},{x:9,y:12.5,z:2.2}],
@@ -39,12 +39,12 @@ const L=[
  beds:[{x0:1,y0:2.2,x1:9,y1:3.3,plant:'roses',n:4}],pots:[{x:2,y:6.4,plant:'marigold'},{x:8,y:6.4,plant:'marigold'},{x:5,y:12.6,plant:'fern'}],baskets:[{x:1.2,y:13.4,z:2.2}],
  hard:[PATIO],deco:[{k:'post',x:.4,y:9.6},{k:'post',x:9.6,y:9.6},{k:'windsock',x:.4,y:.4}]},
 {id:'no23',no:23,name:'No. 23',who:'Show week',line:'The village show is Saturday. Everything at once.',time:95,parF:1.55,cat:{delay:12,gap:9,dig:.2},window:{x:3,first:10,warn:1.3,watch:3,quiet:7,quietVar:4,rate:.42},
- gh:{x0:5.2,y0:1.6,x1:9.4,y1:5.4,d0:6.4,d1:8.2},pots:[{x:6.6,y:3,plant:'tomato',h:.7,cap:1.8},{x:7.6,y:2.4,plant:'tomato',h:.7,cap:1.8},{x:8.1,y:3.8,plant:'tomato',h:.7,cap:1.8},{x:1.6,y:4.2,plant:'marrow',r:.6,cap:3}],
- beds:[{x0:1,y0:8,x1:4,y1:9.2,plant:'lettuce',n:2},{x0:6,y0:8,x1:9,y1:9.2,plant:'beans',n:2},{x0:2.8,y0:12.5,x1:7.2,y1:13.3,plant:'seedlings',fragile:true,n:3,cap:.8}],baskets:[{x:5,y:10.6,z:2.3}],
+ gh:{x0:5.2,y0:1.6,x1:9.4,y1:5.4,d0:6.4,d1:8.2},pots:[{x:6.6,y:3,plant:'tomato',h:.7,cap:2.2},{x:7.6,y:2.4,plant:'tomato',h:.7,cap:2.2},{x:8.1,y:3.8,plant:'tomato',h:.7,cap:2.2},{x:1.6,y:4.2,plant:'marrow',r:.6,cap:3.6}],
+ beds:[{x0:1,y0:8,x1:4,y1:9.2,plant:'lettuce',n:2},{x0:6,y0:8,x1:9,y1:9.2,plant:'beans',n:2},{x0:2.8,y0:12.5,x1:7.2,y1:13.3,plant:'seedlings',fragile:true,n:3,cap:1.1}],baskets:[{x:5,y:10.6,z:2.3}],
  hard:[PATIO],deco:[{k:'pergola',x:3.6,y:10.6,x2:6.4}]},
 ];
-function need(lv){let n=0;for(const p of lv.pots||[])n+=p.cap||1.6;for(const p of lv.baskets||[])n+=p.cap||1.4;
-  for(const b of lv.beds||[]){const c=b.n||Math.max(1,Math.round(Math.max(b.x1-b.x0,b.y1-b.y0)/1.4));n+=c*(b.cap||1.1);}return n;}
+function need(lv){let n=0;for(const p of lv.pots||[])n+=p.cap||2.2;for(const p of lv.baskets||[])n+=p.cap||1.8;
+  for(const b of lv.beds||[]){const c=b.n||Math.max(1,Math.round(Math.max(b.x1-b.x0,b.y1-b.y0)/1.4));n+=c*(b.cap||1.5);}return n;}
 function finish(lv){const n=need(lv);lv.need=n;if(!lv.water)lv.water=Math.ceil(n*(lv.waterF||2.6));lv.par=Math.max(1,Math.round((lv.water-n*lv.parF)*10)/10);lv.seed=lv.seed||U.hash(lv.id);return lv;}
 L.forEach(finish);
 
@@ -65,12 +65,12 @@ function gen(seed,d){const r=U.rng(seed);const R=(a,b)=>a+r()*(b-a);const pick=a
   const feats=['baskets','wash','seedlings','wind','window','cat','gh','tree'].slice(0,Math.min(8,1+Math.floor(d/1.5)));
   const k=Math.min(feats.length,d<2?0:d<5?1:d<9?2:3);const use=new Set();while(use.size<k)use.add(pick(feats));
   if(use.has('gh')){const p=place(4.4,4,1,6);if(p){const [x,y]=p;const dc=x+2.2+R(-.6,.6);lv.gh={x0:x,y0:y,x1:x+4.4,y1:y+4,d0:dc-1,d1:dc+1};
-     for(let i=0;i<3;i++)lv.pots.push({x:x+1+i*1.2,y:y+1.1+((i%2)?1.2:0),plant:'tomato',h:.7,cap:1.8});}}
+     for(let i=0;i<3;i++)lv.pots.push({x:x+1+i*1.2,y:y+1.1+((i%2)?1.2:0),plant:'tomato',h:.7,cap:2.2});}}
   if(use.has('tree')){const p=place(3.4,1.8,4,9);if(p){lv.trees=[{x:p[0]+1.7,y:p[1]+.9,r:2.2}];lv.beds.push({x0:p[0]+.2,y0:p[1]+.3,x1:p[0]+3.2,y1:p[1]+1.4,plant:'lettuce',n:2});}}
   if(use.has('wash')){const y=R(7,10.5),y2=y+R(-.6,.6);const items=[];let u=.04;const cols=['#e9e4d6','#c55a4a','#7b93b5','#e2b64a','#5f8a6a','#dfe6e8'];
      while(u<.9){const w=R(.07,.11);items.push([u,u+w,R(.6,.9),pick(['shirt','towel','sheet','socks']),pick(cols)]);u+=w+R(.02,.08);}
      lv.wash={ax:.4,ay:y,bx:9.6,by:y2,items};lv.deco.push({k:'post',x:.4,y},{k:'post',x:9.6,y:y2});occ.push([0,Math.min(y,y2)-.4,10,Math.max(y,y2)+.4]);}
-  if(use.has('seedlings')){const p=place(2.6,.9,11.6,14.2);if(p)lv.beds.push({x0:p[0],y0:p[1],x1:p[0]+2.6,y1:p[1]+.9,plant:'seedlings',fragile:true,n:2,cap:.8});}
+  if(use.has('seedlings')){const p=place(2.6,.9,11.6,14.2);if(p)lv.beds.push({x0:p[0],y0:p[1],x1:p[0]+2.6,y1:p[1]+.9,plant:'seedlings',fragile:true,n:2,cap:1.1});}
   if(use.has('baskets')){const y=R(8,12.5),n=2+(r()<.4?1:0);const xs=n===2?[2.4,7.6]:[2.2,5,7.8];lv.deco.push({k:'pergola',x:xs[0]-1.1,y,x2:xs[n-1]+1.1});for(const x of xs)lv.baskets.push({x,y,z:2.25});}
   if(use.has('wind')){lv.wind={x:(r()<.5?-1:1)*R(1.6,2.4+d*.06),y:R(-.6,.6),ph:R(0,6)};lv.deco.push({k:'windsock',x:r()<.5?.4:9.6,y:.4});}
   if(use.has('window'))lv.window={x:R(2,8),first:R(6,10),warn:Math.max(.9,1.4-d*.03),watch:3,quiet:Math.max(4.5,7-d*.15),quietVar:4,rate:.42};
