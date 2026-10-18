@@ -3,7 +3,7 @@
 'use strict';
 const SIM=(()=>{
 const G=30,DT=1/120,NOZ_Z=1.0,EL_MIN=-14,EL_MAX=80,AZ_MAX=1.5,FENCE_H=1.8,GW=10,GH=17;
-const MODES={jet:{v:21,rate:120,spread:.005,vs:.01,flow:1,wind:.55,drag:.04},spray:{v:14,rate:230,spread:.13,vs:.1,flow:1,wind:1.3,drag:.55}};
+const MODES={jet:{v:21,rate:120,spread:.005,vs:.01,flow:1,wind:1.0,drag:.04},spray:{v:14,rate:230,spread:.13,vs:.1,flow:1,wind:2.0,drag:.55}};
 const OVER=1.6;            // fill above this spills over and the plant counts as overwatered
 // particle pool, used as a ring in emission order so neighbours can be drawn as one continuous stream
 const N=2048,px=new Float32Array(N),py=new Float32Array(N),pz=new Float32Array(N),vx=new Float32Array(N),vy=new Float32Array(N),vz=new Float32Array(N),

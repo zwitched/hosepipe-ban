@@ -15,10 +15,11 @@ class Bot:
       g=await s.geo();s.anchor=(g['W']*0.5,g['H']*0.55);await s.tc.press(s.anchor);await s.pg.wait_for_timeout(16)
   async def steer(s,az,el,hold=True):
     # move the finger until the aim matches; regrip when the finger would leave the screen
-    for it in range(8):
+    if hold:await s.ensure_down()
+    for it in range(10):
       x=await st(s.pg);g=await s.geo()
       daz=az-x['az'];de=el-x['el']
-      if abs(daz)<0.012 and abs(de)<0.6:return True
+      if abs(daz)<0.006 and abs(de)<0.3:return True
       dx=daz*max(2.2,g['R'])*g['s']/(1.05*g['sens']);dy=-de*g['s']/(6*g['sens'])
       await s.ensure_down();px,py=s.tc.pos;tx,ty=px+dx,py+dy
       if not(20<tx<g['W']-20 and 90<ty<g['H']-20):
