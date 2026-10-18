@@ -1,12 +1,11 @@
 # HOSEPIPE BAN - progress
-Concept: top-down dusk garden watering during a hosepipe ban. One finger = hose: hold to run water, slide up/down to raise/lower the nozzle (flat jet vs lob), sideways to swing. Real ballistic stream with flight time, long evening shadows show height.
+Concept: top-down dusk garden watering during a hosepipe ban. One finger = hose: hold to run water, slide up/down to raise/lower the nozzle (flat jet vs lob), sideways to swing. Ballistic stream with flight time; long evening shadows show height.
 ## Done
-- sim (droplets, collisions: pots, baskets, beds, washing, greenhouse, tree, gnome, cat, window watcher, wind), render, audio, input
-- 12 handcrafted gardens, generator (Heatwave, daily) with reachability check
+- sim, render, audio, input; 12 gardens; generator (Heatwave, daily) with reachability check
 - menus: title (animated stream), street, heatwave, pause, results, settings
-- tests: test_slice.py (touch loop, Pixel 7 + iPhone 13) 28/28; bot.py touch bot; shots.py
-- sw.js, manifest, icons (tools/icon.py), build.py -> dist/index.html
+- tests (all touch-driven): slice 30/30, mechanics 28/28, menus 40/40, input 11/11, layout 92/92, gen 5/5, http 7/7
+- bot: skilled wins all 12; sloppy (aim error + slow correction) stars first4=7 vs last4=3, fails No. 23 (tests/last_bot_sloppy.log)
+- README, sw.js, manifest, icons, build.py -> dist/index.html
 ## Next
-- bot results all levels (test_bot.py), tune
-- tests: menus, mechanics (wind/window/cat/greenhouse/seedlings/washing), fail paths, layout/safe-area, persistence, audio toggle, perf, http/offline
-- README, publish
+- final full run (run_all minus bot) + skilled bot rerun, perf re-check
+- publish: repo zwitched/hosepipe-ban, Pages, verify live; zip /workspace/hosepipe-ban.zip

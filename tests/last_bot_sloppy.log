@@ -1,0 +1,15 @@
+{"profile": {"noise": 1.0, "react": 0.35, "seed": 7, "lead": 0.3}, "lvl": "no1", "won": true, "why": "", "stars": 3, "water": 13.0, "t": 10.8, "done": "3/3", "sog": 0, "flat": 0, "soaked": 0}
+{"profile": {"noise": 1.0, "react": 0.35, "seed": 7, "lead": 0.3}, "lvl": "no3", "won": true, "why": "", "stars": 1, "water": 21.9, "t": 33.9, "done": "8/8", "sog": 4, "flat": 0, "soaked": 0}
+{"profile": {"noise": 1.0, "react": 0.35, "seed": 7, "lead": 0.3}, "lvl": "no5", "won": true, "why": "", "stars": 2, "water": 13.1, "t": 23.4, "done": "5/5", "sog": 0, "flat": 0, "soaked": 0}
+{"profile": {"noise": 1.0, "react": 0.35, "seed": 7, "lead": 0.3}, "lvl": "no7", "won": true, "why": "", "stars": 1, "water": 10.9, "t": 24.6, "done": "6/6", "sog": 4, "flat": 0, "soaked": 0}
+{"profile": {"noise": 1.0, "react": 0.35, "seed": 7, "lead": 0.3}, "lvl": "no9", "won": true, "why": "", "stars": 1, "water": 8.6, "t": 29.1, "done": "7/7", "sog": 4, "flat": 0, "soaked": 0}
+{"profile": {"noise": 1.0, "react": 0.35, "seed": 7, "lead": 0.3}, "lvl": "no11", "won": true, "why": "", "stars": 1, "water": 23.7, "t": 41.5, "done": "12/12", "sog": 4, "flat": 0, "soaked": 0}
+{"profile": {"noise": 1.0, "react": 0.35, "seed": 7, "lead": 0.3}, "lvl": "no13", "won": true, "why": "", "stars": 1, "water": 13.5, "t": 43.3, "done": "7/7", "sog": 3, "flat": 0, "soaked": 0}
+{"profile": {"noise": 1.0, "react": 0.35, "seed": 7, "lead": 0.3}, "lvl": "no15", "won": true, "why": "", "stars": 1, "water": 6.5, "t": 32.3, "done": "8/8", "sog": 4, "flat": 0, "soaked": 0}
+{"profile": {"noise": 1.0, "react": 0.35, "seed": 7, "lead": 0.3}, "lvl": "no17", "won": true, "why": "", "stars": 1, "water": 9.3, "t": 33.0, "done": "7/7", "sog": 3, "flat": 0, "soaked": 0}
+{"profile": {"noise": 1.0, "react": 0.35, "seed": 7, "lead": 0.3}, "lvl": "no19", "won": true, "why": "", "stars": 1, "water": 2.4, "t": 43.2, "done": "9/9", "sog": 6, "flat": 0, "soaked": 0}
+{"profile": {"noise": 1.0, "react": 0.35, "seed": 7, "lead": 0.3}, "lvl": "no21", "won": true, "why": "", "stars": 1, "water": 6.4, "t": 50.3, "done": "8/8", "sog": 3, "flat": 0, "soaked": 2}
+{"profile": {"noise": 1.0, "react": 0.35, "seed": 7, "lead": 0.3}, "lvl": "no23", "won": false, "why": "dry", "stars": 0, "water": 0, "t": 92.2, "done": "8/12", "sog": 1, "flat": 0, "soaked": 0}
+PASS sloppy bot does worse on the last four gardens than the first four 7 3
+ERRORS none
+SUMMARY bot: 1/1 passed
