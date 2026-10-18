@@ -7,7 +7,7 @@ const X=x=>ox+x*s,Y=(y,z)=>oy+(y-(z||0)*ZK)*s;
 function init(c){cv=c;g=cv.getContext('2d');resize();}
 function resize(){dpr=Math.min(2,window.devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);cv.style.width=W+'px';cv.style.height=H+'px';
   const cs=getComputedStyle(document.documentElement);safeT=parseFloat(cs.getPropertyValue('--sat'))||0;safeB=parseFloat(cs.getPropertyValue('--sab'))||0;
-  const avail=H-safeT-safeB;s=Math.min(W/10.4,(avail-58)/20.7);ox=(W-10*s)/2;oy=H-safeB-6-17.5*s;bgKey='';}
+  const avail=H-safeT-safeB;s=Math.min(W/10.4,(avail-62)/20.7);ox=(W-10*s)/2;oy=H-safeB-6-17.5*s;bgKey='';}
 function toWorld(px,py){return [(px-ox)/s,(py-oy)/s];}
 function toScreen(x,y,z){return [X(x),Y(y,z)];}
 
@@ -64,7 +64,7 @@ function drawHouses(c,S,r){const top=Y(0,FENCE_TOP());
   // a drainpipe
   c.fillStyle='#3a3a3a';c.fillRect(X(5)-3,wt,5,wy-wt);}
 function FENCE_H(){return 1.8;}function FENCE_TOP(){return 1.8;}
-function winRect(wx){const x0=X(wx-.7),x1=X(wx+.7),y0=Y(-1,4),y1=Y(-1,2.25);return [x0,y0,x1,y1];}
+function winRect(wx){const x0=X(wx-.7),x1=X(wx+.7),y0=Y(-1,3.75),y1=Y(-1,2.05);return [x0,y0,x1,y1];}
 function drawWindowFrame(c,wx,big){const [x0,y0,x1,y1]=winRect(wx);c.fillStyle='#e9e4d8';c.fillRect(x0-3,y0-3,x1-x0+6,y1-y0+8);c.fillStyle='#2f3a44';c.fillRect(x0,y0,x1-x0,y1-y0);
   if(!big){c.fillStyle='rgba(180,200,210,.25)';c.fillRect(x0+2,y0+2,(x1-x0)*.4,(y1-y0)*.5);c.fillStyle='#e9e4d8';c.fillRect((x0+x1)/2-1.5,y0,3,y1-y0);}}
 function drawFences(c,r){
