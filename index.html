@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#2f3b26">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Six weeks without rain and a hosepipe ban. Water the neighbours' gardens before dark, and don't get seen.">
+<title>Hosepipe Ban</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="cv"></canvas>
+
+<div id="hud" class="hidden">
+  <div id="hudTop">
+    <button id="bPause" class="ib" aria-label="Pause"><svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+    <div id="hudMid"><div id="hudName">No. 1</div><div id="dusk"><div id="duskFill"></div><div id="sun"></div></div></div>
+    <button id="bRestart" class="ib" aria-label="Restart"><svg viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 1-6.6 4.7" fill="none" stroke-width="2.6" stroke-linecap="round"/><path d="M4 4v6h6z"/></svg></button>
+  </div>
+  <div id="watch" class="hidden"><svg viewBox="0 0 24 16"><path d="M1 8c3-5 7-7 11-7s8 2 11 7c-3 5-7 7-11 7S4 13 1 8z" fill="#f3ead2"/><circle cx="12" cy="8" r="4" fill="#2f3b26"/></svg><div id="suspBar"><div id="suspFill"></div></div></div>
+  <div id="coach" class="hidden"></div>
+  <div id="butt"><div id="buttTank"><div id="buttFill"></div><div id="buttPar"><span>&#9733;</span></div></div><div id="buttTxt">20 L</div></div>
+  <button id="bNozzle" class="hidden" aria-label="Nozzle"><svg viewBox="0 0 40 24"><rect x="2" y="8" width="18" height="8" rx="2"/><path d="M20 6h6l4 6-4 6h-6z"/></svg><span id="nozTxt">JET</span></button>
+</div>
+
+<div id="intro" class="hidden"><div class="card"><div id="inNo">No. 1</div><div id="inWho">Yours</div><p id="inLine"></p>
+  <ul id="inGoals"><li><b>&#9733;</b> Water every plant before dark</li><li><b>&#9733;</b> Nothing overwatered or flattened</li><li><b>&#9733;</b> Finish with water above the line</li></ul>
+  <div id="inGo">Hold anywhere to start</div></div></div>
+
+<div id="sTitle" class="screen">
+  <div class="tpanel">
+    <div class="tkick">Larch Close &middot; August</div>
+    <h1>Hosepipe<br>Ban</h1>
+    <p class="tsub">Six weeks without rain. The neighbours are away and you've got their keys. Water their gardens before dark, and don't let anyone see you doing it.</p>
+    <button id="bPlay" class="big">Start watering</button>
+    <div class="row"><button id="bStreet">The Close</button><button id="bDaily">Today's garden</button></div>
+    <div class="row"><button id="bHeat">Heatwave</button><button id="bSettings">Settings</button></div>
+  </div>
+</div>
+
+<div id="sStreet" class="screen hidden">
+  <div class="panel tall"><div class="phead"><button class="back" data-back="sTitle">&#8249;</button><h2>Larch Close</h2><span id="starTot"></span></div>
+  <div id="houses"></div></div>
+</div>
+
+<div id="sHeat" class="screen hidden">
+  <div class="panel"><div class="phead"><button class="back" data-back="sTitle">&#8249;</button><h2>Heatwave</h2></div>
+  <p>The whole estate wants watering. Garden after garden, each one a bit worse, until you run dry, run out of light, or get reported.</p>
+  <p id="heatBest"></p><button id="bHeatGo" class="big">Start</button></div>
+</div>
+
+<div id="sPause" class="screen hidden dim">
+  <div class="panel"><h2>Paused</h2><button id="bResume" class="big">Carry on</button><button id="bPRestart">Start this garden again</button><button id="bPSettings">Settings</button><button id="bQuit">Back to the Close</button></div>
+</div>
+
+<div id="sResult" class="screen hidden dim">
+  <div class="panel"><div id="rKick"></div><h2 id="rTitle">Watered</h2><p id="rWhy"></p>
+  <div id="rStars"></div><ul id="rList"></ul><p id="rStat"></p>
+  <button id="bNext" class="big">Next garden</button><div class="row"><button id="bAgain">Try again</button><button id="bResMenu">The Close</button></div></div>
+</div>
+
+<div id="sSettings" class="screen hidden dim">
+  <div class="panel"><div class="phead"><button class="back" id="bSetBack">&#8249;</button><h2>Settings</h2></div>
+  <label class="tog"><span>Sound</span><input type="checkbox" id="optSound"><i></i></label>
+  <label class="tog"><span>Vibration</span><input type="checkbox" id="optVib"><i></i></label>
+  <label class="tog"><span>Left-handed (nozzle on the left)</span><input type="checkbox" id="optLeft"><i></i></label>
+  <label class="sl"><span>Aim speed <b id="sensV">1.0</b></span><input type="range" id="optSens" min="0.5" max="1.8" step="0.1"></label>
+  <button id="bReset" class="warn">Clear all progress</button></div>
+</div>
+
+<div id="rotate"><div>Turn your phone upright</div></div>
+<script src="js/util.js"></script>
+<script src="js/sim.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/render.js"></script>
+<script src="js/main.js"></script>
+<script>if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "Hosepipe Ban",
+  "short_name": "Hosepipe Ban",
+  "description": "Water the neighbours' gardens before dark, and don't get seen.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2f3b26",
+  "theme_color": "#2f3b26",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}
